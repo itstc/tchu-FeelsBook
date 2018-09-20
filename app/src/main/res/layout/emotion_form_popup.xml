@@ -43,6 +43,7 @@
             android:id="@+id/SubmitEmotion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="emotionDialogSubmit"
             android:text="Save Emotion" />
 
     </LinearLayout>

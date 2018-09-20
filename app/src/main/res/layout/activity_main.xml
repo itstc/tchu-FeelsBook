@@ -11,6 +11,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:background="@drawable/ic_person"
+        android:onClick="historyLogClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +31,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/joy"
+            android:contentDescription="@string/joy_label"
             android:onClick="onClick" />
 
         <TextView
@@ -55,6 +57,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/love"
+            android:contentDescription="@string/love_label"
             android:onClick="onClick" />
 
         <TextView
@@ -79,6 +82,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/surprise"
+            android:contentDescription="@string/surprise_label"
             android:onClick="onClick" />
 
         <TextView
@@ -103,6 +107,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/sad"
+            android:contentDescription="@string/sad_label"
             android:onClick="onClick" />
 
         <TextView
@@ -127,6 +132,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/angry"
+            android:contentDescription="@string/angry_label"
             android:onClick="onClick" />
 
         <TextView
@@ -151,6 +157,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/fear"
+            android:contentDescription="@string/fear_label"
             android:onClick="onClick" />
 
         <TextView
