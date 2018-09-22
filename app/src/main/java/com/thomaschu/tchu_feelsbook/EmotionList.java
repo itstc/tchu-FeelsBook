@@ -13,42 +13,48 @@ public class EmotionList {
         emotions = new ArrayList<>();
     }
 
-    public Collection<Emotion> getList() {
+    /*
+    * getList() sorts and returns a list by most recent emotions based on date
+    * @param {} none
+    * @return {ArrayList<Emotion>} A sorted ArrayList of Emotion objects
+    * */
+    public ArrayList<Emotion> getList() {
         // sort by date first then return the sorted list
         Collections.sort(emotions, new Comparator<Emotion>() {
             @Override
             public int compare(Emotion a, Emotion b) {
-                return a.getDate().compareTo(b.getDate());
+                return -DateConverter.compareEmotionDates(a,b);
             }
         });
 
         return emotions;
     }
 
+    /*
+    * contains is a getter to check if a emotion instance is in our list
+    * @param {Emotion e} our emotion target
+    * @return {Boolean} true if contains else false
+    * */
     public boolean contains(Emotion e) {
         return emotions.contains(e);
     }
 
+    /* add/remove setters
+        @param {Emotion e} emotion we target
+        @return {void} nothing
+    */
     public void add(Emotion e) {
         emotions.add(e);
     }
-
     public void remove(Emotion e) {
         emotions.remove(e);
     }
 
+    // using edit form data, we can update the emotion from the list
     public void edit(Emotion e, String comment, Date date) {
         remove(e);
         e.setEmotion(comment, date);
         add(e);
     }
 
-    // used to test ListActivity
-    public String[] toStringArray() {
-        String[] result = new String[emotions.size()];
-        for(int i = 0; i < emotions.size(); i++) {
-            result[i] = emotions.get(i).getEmotionType();
-        }
-        return result;
-    }
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/EmotionItem"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/emotionImg"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_alignTop="@+id/emotionImg">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/emotionType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="type" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/emotionDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="date" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/emotionComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
