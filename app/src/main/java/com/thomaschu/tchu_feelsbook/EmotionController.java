@@ -1,5 +1,8 @@
 package com.thomaschu.tchu_feelsbook;
 
+import android.util.Log;
+
+import java.io.OutputStreamWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -36,6 +39,7 @@ public class EmotionController implements EmotionConstants {
         if(args.length != 3) throw new EmotionParseException();
 
         // create emotion from our input string
+        Log.d("READ_DATE", args[2]);
         return new Emotion(args[0], args[1], DateConverter.getDateFromString(args[2]));
     }
 
@@ -50,7 +54,7 @@ public class EmotionController implements EmotionConstants {
             results.append(String.format("%s|%s|%s\n",
                     em.getEmotionType(),
                     em.getComment(),
-                    DateConverter.getISO8601FromDate(em.getDate())
+                    em.getDate()
             ));
         }
         return results.toString();

@@ -1,5 +1,7 @@
 package com.thomaschu.tchu_feelsbook;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class DateConverter {
 
@@ -17,7 +20,7 @@ public class DateConverter {
     }
 
     private DateConverter() {
-        fm = new SimpleDateFormat("YYYY-MM-DD'T'HH-mm-ss", Locale.CANADA);
+        fm = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss", Locale.CANADA);
     }
 
     /*
@@ -34,8 +37,11 @@ public class DateConverter {
     * @param {Emotion d1, Emotion d2} the 2 emotions to compare
     * @return {int} an integer based on comparison
     * */
-    public static int compareEmotionDates(Emotion d1, Emotion d2) {
-        return d1.getDate().compareTo(d2.getDate());
+    public static int compareEmotionDates(Emotion e1, Emotion e2) {
+        Date d1 = getDateFromString(e1.getDate());
+        Date d2 = getDateFromString(e2.getDate());
+
+        return d1.compareTo(d2);
     }
 
     public static Date getDateFromString(String input) {

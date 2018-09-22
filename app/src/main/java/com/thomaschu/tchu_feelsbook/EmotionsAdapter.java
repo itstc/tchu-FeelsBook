@@ -59,7 +59,7 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
         }
         emoteImage.setImageDrawable(imgDrawable);
         emoteType.setText(emote.getEmotionType());
-        emoteDate.setText(emote.getDateAsString());
+        emoteDate.setText(emote.getDate());
         // Return the completed view to render on screen
         return convertView;
     }

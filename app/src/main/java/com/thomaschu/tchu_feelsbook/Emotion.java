@@ -6,7 +6,7 @@ import java.util.Date;
 public class Emotion {
     private String emotionType;
     private String comment;
-    private Date emotionDate;
+    private String emotionDate;
 
     /*
     * Emotion constructor to set our member attributes
@@ -16,14 +16,12 @@ public class Emotion {
     public Emotion(String type, String comment, Date created) {
         this.emotionType = type;
         this.comment = comment;
-        this.emotionDate = created;
+        this.emotionDate = DateConverter.getISO8601FromDate(created);
     }
 
     // overloaded constructor if user does not add comment and date
     public Emotion(String type) {
-        this.emotionType = type;
-        this.comment = "";
-        this.emotionDate = new Date();
+        this(type, "", new Date());
     }
 
     /*
@@ -37,13 +35,9 @@ public class Emotion {
     public String getComment() {
         return comment;
     }
-    public Date getDate() {
+    public String getDate() {
         return emotionDate;
     }
-    public String getDateAsString() {
-        return DateConverter.getISO8601FromDate(emotionDate);
-    }
-
 
     /*
     * a setter to change the comment/date of our emotion
@@ -52,7 +46,7 @@ public class Emotion {
     * */
     public void setEmotion(String comment, Date date) {
         this.comment = comment;
-        this.emotionDate = date;
+        this.emotionDate = DateConverter.getISO8601FromDate(date);
     }
 
 }
