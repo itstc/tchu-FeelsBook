@@ -12,33 +12,60 @@
         android:layout_width="60dp"
         android:layout_height="60dp" />
 
-    <TableLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_alignTop="@+id/emotionImg">
+        android:orientation="vertical">
 
-        <TableRow>
-            <TextView
-                android:id="@+id/emotionType"
+        <TextView
+            android:id="@+id/emotionType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="type" />
+
+
+        <TextView
+            android:id="@+id/emotionDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="date" />
+
+
+        <TextView
+            android:id="@+id/emotionComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="comment" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/emotionEditButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="type" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:id="@+id/emotionDate"
+                android:layout_weight="1"
+                android:background="@drawable/edit_btn"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:text="@string/edit_button"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/emotionDeleteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="date" />
-        </TableRow>
-        <TableRow>
-
-            <TextView
-                android:id="@+id/emotionComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </TableRow>
-    </TableLayout>
-
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/delete_btn"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:text="@string/delete_button"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

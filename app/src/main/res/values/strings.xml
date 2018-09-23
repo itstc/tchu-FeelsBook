@@ -7,4 +7,6 @@
     <string name="angry_label">Angry</string>
     <string name="fear_label">Fear</string>
     <string name="main_title">How Are You Feeling?</string>
+    <string name="edit_button">Edit</string>
+    <string name="delete_button">Delete</string>
 </resources>

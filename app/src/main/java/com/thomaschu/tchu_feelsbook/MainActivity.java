@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("DESTROY MAIN", "destroying main activity and saving...");
         saveToFile();
     }
 
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 importedEmotions.add(EmotionController.deserialize(currentLine));
                 currentLine = br.readLine();
             }
-            Log.d("filein", "done reading file!");
         }catch(FileNotFoundException e) {
             // file not found, create one
             createNewFile();

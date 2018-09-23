@@ -39,7 +39,6 @@ public class EmotionController implements EmotionConstants {
         if(args.length != 3) throw new EmotionParseException();
 
         // create emotion from our input string
-        Log.d("READ_DATE", args[2]);
         return new Emotion(args[0], args[1], DateConverter.getDateFromString(args[2]));
     }
 

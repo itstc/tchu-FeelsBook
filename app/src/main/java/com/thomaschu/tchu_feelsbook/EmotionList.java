@@ -52,9 +52,8 @@ public class EmotionList {
 
     // using edit form data, we can update the emotion from the list
     public void edit(Emotion e, String comment, Date date) {
-        remove(e);
         e.setEmotion(comment, date);
-        add(e);
+        emotions = getList();
     }
 
 }

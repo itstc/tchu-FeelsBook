@@ -20,7 +20,7 @@ public class DateConverter {
     }
 
     private DateConverter() {
-        fm = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss", Locale.CANADA);
+        fm = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.CANADA);
     }
 
     /*
@@ -42,6 +42,15 @@ public class DateConverter {
         Date d2 = getDateFromString(e2.getDate());
 
         return d1.compareTo(d2);
+    }
+
+    public static boolean isValidDate(String input) {
+        try {
+            DateFormatHolder.INSTANCE.fm.parse(input);
+            return true;
+        } catch(ParseException e) {
+            return false;
+        }
     }
 
     public static Date getDateFromString(String input) {

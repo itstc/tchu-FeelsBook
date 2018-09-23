@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="white">#fff</color>
+    <color name="btnText">#D0D2DE</color>
+    <color name="success">#97CC04</color>
+    <color name="warning">#F3A712</color>
+    <color name="danger">#CC2936</color>
+
 </resources>
