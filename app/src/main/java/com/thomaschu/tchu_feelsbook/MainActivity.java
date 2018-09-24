@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.AngryButton:
             case R.id.FearButton:
                 // notify that emote is created
+                EmotionController.setCount(view.getContentDescription().toString(), 1);
                 Toast.makeText(MainActivity.this, view.getContentDescription().toString() + " added!", Toast.LENGTH_SHORT).show();
                 EmotionController.get().add(new Emotion(view.getContentDescription().toString(), "", new Date()));
                 break;

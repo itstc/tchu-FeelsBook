@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +22,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class ListActivity extends AppCompatActivity {
-    private EmotionsAdapter adapter;
+public class ListActivity extends AppCompatActivity implements EmotionConstants {
+    private EmotionsAdapter emotionAdapter;
+    private EmotionCountAdapter countAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +33,14 @@ public class ListActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        countAdapter = new EmotionCountAdapter(this, EmotionController.getCounter());
+        final RecyclerView countList = findViewById(R.id.CountLayout);
+        countList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        countList.setAdapter(countAdapter);
+
         // hook up our EmotionController list to our custom ListView adapter to display emotions
-        adapter = new EmotionsAdapter(this, 0, EmotionController.get());
-        ListView list = (ListView)findViewById(R.id.EmotionList);
-        list.setAdapter(adapter);
+        emotionAdapter = new EmotionsAdapter(this, 0, EmotionController.get(), countAdapter);
+        ListView list = findViewById(R.id.EmotionList);
+        list.setAdapter(emotionAdapter);
     }
 }

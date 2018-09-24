@@ -28,9 +28,11 @@ import java.util.List;
 public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
 
     private Dialog dialog;
+    private EmotionCountAdapter counter;
 
-    public EmotionsAdapter(Context context, int resource, EmotionList emotionList) {
+    public EmotionsAdapter(Context context, int resource, EmotionList emotionList, EmotionCountAdapter counter) {
         super(context, resource, emotionList.getList());
+        this.counter = counter;
     }
 
     @Override
@@ -71,6 +73,8 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EmotionController.setCount(emote.getEmotionType(), -1);
+                counter.notifyDataSetChanged();
                 remove(emote);
             }
         });
@@ -92,6 +96,7 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
         dialog.findViewById(R.id.ExitButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EmotionController.setCount(e.getEmotionType(), -1);
                 dialog.dismiss();
             }
         });

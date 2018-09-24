@@ -5,10 +5,12 @@ import android.util.Log;
 import java.io.OutputStreamWriter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 
 public class EmotionController implements EmotionConstants {
     private EmotionList emotionLog;
+    private LinkedHashMap<String, EmotionCounter> emotionCounter;
 
     /* a static class to hold our single instance of the controller */
     private static class EmotionHolder {
@@ -18,6 +20,7 @@ public class EmotionController implements EmotionConstants {
     // EmotionController constructor creates a new EmotionList and will populate it from file
     private EmotionController() {
         this.emotionLog = new EmotionList();
+        this.emotionCounter = new LinkedHashMap<String, EmotionCounter>();
     }
 
     /*
@@ -25,6 +28,25 @@ public class EmotionController implements EmotionConstants {
     * */
     public static EmotionList get() {
         return EmotionHolder.INSTANCE.emotionLog;
+    }
+
+    public static LinkedHashMap<String, EmotionCounter> getCounter() {return EmotionHolder.INSTANCE.emotionCounter;}
+
+
+    private static void resetCounter() {
+        LinkedHashMap<String,EmotionCounter> newMap = new LinkedHashMap<>();
+        newMap.put(JOY, new EmotionCounter());
+        newMap.put(LOVE, new EmotionCounter());
+        newMap.put(SURPRISE, new EmotionCounter());
+        newMap.put(SAD, new EmotionCounter());
+        newMap.put(ANGRY, new EmotionCounter());
+        newMap.put(FEAR, new EmotionCounter());
+        EmotionHolder.INSTANCE.emotionCounter = newMap;
+    }
+
+    public static void setCount(String key, Integer i) {
+        // map[key] += i
+        EmotionHolder.INSTANCE.emotionCounter.get(key).increment(i);
     }
 
     /*
@@ -61,6 +83,10 @@ public class EmotionController implements EmotionConstants {
 
     public static void importEmotions(EmotionList newList) {
         EmotionHolder.INSTANCE.emotionLog = newList;
+        resetCounter();
+        for(Emotion e: newList.getList()) {
+            setCount(e.getEmotionType(),1);
+        }
     }
 
 
