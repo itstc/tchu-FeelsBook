@@ -14,10 +14,10 @@ import java.util.LinkedHashMap;
 
 public class EmotionCountAdapter extends RecyclerView.Adapter<EmotionCountAdapter.ViewHolder> implements EmotionConstants{
     private Context context;
-    private LinkedHashMap<String, EmotionCounter> data;
+    private LinkedHashMap<String, Integer> data;
     private String[] keys;
 
-    public EmotionCountAdapter(Context context, LinkedHashMap<String, EmotionCounter> data) {
+    public EmotionCountAdapter(Context context, LinkedHashMap<String, Integer> data) {
         // our context to inflate items to
         this.context = context;
 
@@ -40,7 +40,7 @@ public class EmotionCountAdapter extends RecyclerView.Adapter<EmotionCountAdapte
     }
 
     public String getItem(int position) {
-        return data.get(keys[position]).getCount();
+        return String.valueOf(data.get(keys[position]));
     }
 
     @Override

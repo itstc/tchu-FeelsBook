@@ -2,50 +2,48 @@ package com.thomaschu.tchu_feelsbook;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PictureDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.Date;
-import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String FILENAME = "emotiondb.sav";
-    public static final String EMOTION_ID = "com.thomaschu.tchu_feelsbook.EMOTION_ID";
-    public static final String EMOTION_LIST = "com.thomaschu.tchu.feelsbook.EMOTION_LIST";
+public class MainActivity extends AppCompatActivity implements EmotionConstants, TView<EmotionsModel> {
 
-    Dialog dialog;
-    Drawable emotionState;
+    private PopUpDialog dialog;
+    private static final String saveButtonText = "Save Button";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
 
-        importEmotionToController();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FeelsBookApplication.getEmotionsModel().addView(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FeelsBookApplication.getEmotionsController().saveEmotions(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("DESTROY MAIN", "destroying main activity and saving...");
-        saveToFile();
+        FeelsBookApplication.getEmotionsModel().removeView(this);
+    }
+
+    public void update(EmotionsModel m) {
+
     }
 
     /**
@@ -54,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
      @return void
      **/
     public void onClick(View view) {
+        EmotionsController emotionsController = FeelsBookApplication.getEmotionsController();
         // for emotion clicks we redirect to a modal to add comment
         switch(view.getId()) {
             case R.id.JoyButton:
@@ -62,10 +61,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.SadButton:
             case R.id.AngryButton:
             case R.id.FearButton:
-                // notify that emote is created
-                EmotionController.setCount(view.getContentDescription().toString(), 1);
-                Toast.makeText(MainActivity.this, view.getContentDescription().toString() + " added!", Toast.LENGTH_SHORT).show();
-                EmotionController.get().add(new Emotion(view.getContentDescription().toString(), "", new Date()));
+                createFormPopUp(view.getContentDescription().toString());
                 break;
             case R.id.HistoryButton:
                 Intent intent = new Intent(MainActivity.this, ListActivity.class);
@@ -75,47 +71,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void importEmotionToController() {
-        EmotionList importedEmotions = new EmotionList();
-        try {
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-            // append emotion line by line with format type|comment|date
-            String currentLine = br.readLine();
-            while(currentLine != null) {
-                importedEmotions.add(EmotionController.deserialize(currentLine));
-                currentLine = br.readLine();
+    private void createFormPopUp(final String type) {
+        dialog = new PopUpDialog(this, type);
+        dialog.findViewById(R.id.DateTimeField).setVisibility(View.GONE);
+        // set our submit to add emotions
+        dialog.setSubmitButton(saveButtonText, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView comment = dialog.findViewById(R.id.CommentBox);
+                FeelsBookApplication.getEmotionsController().addEmotion(type, comment.getText().toString(), new Date());
+                Toast.makeText(MainActivity.this, type + " added!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
-        }catch(FileNotFoundException e) {
-            // file not found, create one
-            createNewFile();
-        }catch(IOException e) {
-        }catch(EmotionParseException e) {
-        }
-        EmotionController.importEmotions(importedEmotions);
-    }
-
-    private void createNewFile() {
-        // create a new file since we didn't find one
-        try {
-            FileOutputStream op = openFileOutput(FILENAME, MODE_PRIVATE);
-            op.flush();
-            op.close();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
-
-
-    private void saveToFile() {
-        try {
-            // write the serialized list to file
-            FileOutputStream op = openFileOutput(FILENAME, MODE_PRIVATE);
-            op.write(EmotionController.serialize().getBytes());
-        } catch (FileNotFoundException e) {
-            createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
+        dialog.show();
     }
 }

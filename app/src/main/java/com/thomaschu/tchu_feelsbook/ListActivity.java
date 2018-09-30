@@ -1,28 +1,16 @@
 package com.thomaschu.tchu_feelsbook;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
-public class ListActivity extends AppCompatActivity implements EmotionConstants {
+public class ListActivity extends AppCompatActivity implements EmotionConstants, TView<EmotionsModel> {
     private EmotionsAdapter emotionAdapter;
     private EmotionCountAdapter countAdapter;
 
@@ -30,17 +18,50 @@ public class ListActivity extends AppCompatActivity implements EmotionConstants 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+    }
 
-        Intent intent = getIntent();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        /*
+        * we inject activity to model and setup adapters in onStart because
+        * onCreate only runs once when the app initially loads this activity
+        */
 
-        countAdapter = new EmotionCountAdapter(this, EmotionController.getCounter());
+        FeelsBookApplication.getEmotionsModel().addView(this);
+
+        EmotionsController emotionsController = FeelsBookApplication.getEmotionsController();
+
+        // hook up our EmotionsController counter to our custom ListView adapter to display counter
+        countAdapter = new EmotionCountAdapter(this, emotionsController.getCounter());
         final RecyclerView countList = findViewById(R.id.CountLayout);
         countList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         countList.setAdapter(countAdapter);
+        countList.setOnTouchListener(null);
 
-        // hook up our EmotionController list to our custom ListView adapter to display emotions
-        emotionAdapter = new EmotionsAdapter(this, 0, EmotionController.get(), countAdapter);
+        // hook up our EmotionsController list to our custom ListView adapter to display emotions
+        emotionAdapter = new EmotionsAdapter(this, 0, emotionsController.getEmotions());
         ListView list = findViewById(R.id.EmotionList);
         list.setAdapter(emotionAdapter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // save emotion whenever this activity is not active
+        FeelsBookApplication.getEmotionsController().saveEmotions(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // remove this activity from our model so we don't update it when it's destroyed
+        FeelsBookApplication.getEmotionsModel().removeView(this);
+    }
+
+    public void update(EmotionsModel model) {
+        // update our adapters to re-render new data
+        countAdapter.notifyDataSetChanged();
+        emotionAdapter.notifyDataSetChanged();
     }
 }

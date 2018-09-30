@@ -1,15 +1,8 @@
 package com.thomaschu.tchu_feelsbook;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.v4.content.ContextCompat;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,22 +10,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
-import java.util.List;
-
+/*
+* EmotionsAdapter links with a ListView to display emotions within EmotionList
+* providing an image, name, date and option buttons for the emotion.
+* */
 public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
 
-    private Dialog dialog;
-    private EmotionCountAdapter counter;
+    private PopUpDialog dialog;
+    private static final String submitButtonText = "Edit Emotion";
 
-    public EmotionsAdapter(Context context, int resource, EmotionList emotionList, EmotionCountAdapter counter) {
+    public EmotionsAdapter(Context context, int resource, EmotionList emotionList) {
         super(context, resource, emotionList.getList());
-        this.counter = counter;
     }
 
     @Override
@@ -61,6 +53,7 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
         emoteComment.setText(emote.getComment());
         emoteDate.setText(emote.getDate());
 
+        // set editButton onClick to show edit form
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,9 +66,7 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EmotionController.setCount(emote.getEmotionType(), -1);
-                counter.notifyDataSetChanged();
-                remove(emote);
+                FeelsBookApplication.getEmotionsController().removeEmotion(emote);
             }
         });
 
@@ -90,37 +81,27 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
     * */
     private void createEditForm(final Emotion e) {
         // create a dialog and set layout to edit_form_popup
-        dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.edit_form_popup);
-        // set functionality to X button
-        dialog.findViewById(R.id.ExitButton).setOnClickListener(new View.OnClickListener() {
+        dialog = new PopUpDialog(getContext(), e);
+
+        dialog.setSubmitButton(submitButtonText, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EmotionController.setCount(e.getEmotionType(), -1);
-                dialog.dismiss();
-            }
-        });
+                TextView commentBox = dialog.findViewById(R.id.CommentBox);
+                TextView dateField = dialog.findViewById(R.id.DateEdit);
+                TextView timeField = dialog.findViewById(R.id.TimeEdit);
 
-        // get fields to populate
-        ImageView emoteImg = dialog.findViewById(R.id.EmotionImage);
-        final TextView commentBox = dialog.findViewById(R.id.CommentBox);
-        final TextView timeDateField = dialog.findViewById(R.id.TimeEdit);
+                String formattedDateTime = DateConverter.formatDateToISO(dateField.getText().toString()) + "T" + timeField.getText();
 
-        // populate fields with existing data
-        emoteImg.setImageDrawable(getEmotionDrawable(e.getEmotionType()));
-        commentBox.setText(e.getComment());
-        timeDateField.setText(e.getDate());
+                if(DateConverter.isValidDate(formattedDateTime)) {
 
-        dialog.findViewById(R.id.SubmitEmotion).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(DateConverter.isValidDate(timeDateField.getText().toString())) {
-                    EmotionController.get().edit(e,
+                    // submit edit data
+                    FeelsBookApplication.getEmotionsController().editEmotion(e,
                             commentBox.getText().toString(),
-                            DateConverter.getDateFromString(timeDateField.getText().toString()));
-
+                            DateConverter.getDateFromString(formattedDateTime));
+                    // close dialog
                     dialog.dismiss();
                 } else {
+                    // invalid form data
                     Toast.makeText(getContext(), "Invalid Date!", Toast.LENGTH_LONG).show();
                 }
             }
