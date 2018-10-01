@@ -5,14 +5,10 @@
 /.idea/modules.xml
 /.idea/workspace.xml
 .DS_Store
-/build
 /captures
 .externalNativeBuild
 
 
-# Built application files
-*.apk
-*.ap_
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -23,11 +19,9 @@
 # Generated files
 bin/
 gen/
-out/
 
 # Gradle files
 .gradle/
-build/
 
 # Local configuration file (sdk path, etc)
 local.properties
