@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 
 
-public class ListActivity extends AppCompatActivity implements EmotionConstants, TView<EmotionsModel> {
+public class ListActivity extends AppCompatActivity implements TView<EmotionsModel> {
     private EmotionsAdapter emotionAdapter;
     private EmotionCountAdapter countAdapter;
 

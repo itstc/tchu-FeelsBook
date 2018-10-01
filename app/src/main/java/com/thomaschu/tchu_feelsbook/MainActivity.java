@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements EmotionConstants, TView<EmotionsModel> {
+public class MainActivity extends AppCompatActivity implements TView<EmotionsModel> {
 
     private PopUpDialog dialog;
     private static final String saveButtonText = "Save Button";
@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements EmotionConstants,
      @return void
      **/
     public void onClick(View view) {
-        EmotionsController emotionsController = FeelsBookApplication.getEmotionsController();
         // for emotion clicks we redirect to a modal to add comment
         switch(view.getId()) {
             case R.id.JoyButton:

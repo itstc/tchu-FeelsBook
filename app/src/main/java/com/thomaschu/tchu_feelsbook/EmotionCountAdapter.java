@@ -54,8 +54,8 @@ public class EmotionCountAdapter extends RecyclerView.Adapter<EmotionCountAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView counter;
-        ImageView image;
+        private TextView counter;
+        private ImageView image;
 
         public ViewHolder(View itemView) {
             super(itemView);

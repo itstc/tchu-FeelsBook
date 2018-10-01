@@ -13,10 +13,10 @@ public class Emotion {
     * @params {String type, String comment, Date created} each corresponds with our attributes
     * */
 
-    public Emotion(String type, String comment, Date created) {
+    public Emotion(String type, String comment, Date date) {
         this.emotionType = type;
         this.comment = comment;
-        this.emotionDate = DateConverter.getISO8601FromDate(created);
+        this.emotionDate = DateConverter.getISO8601FromDate(date);
     }
 
     // overloaded constructor if user does not add comment and date

@@ -7,5 +7,4 @@ public interface EmotionConstants {
     String SAD = "Sad";
     String ANGRY = "Angry";
     String FEAR = "Fear";
-
 }

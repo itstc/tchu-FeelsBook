@@ -32,7 +32,7 @@ public class EmotionsController {
      * @return {Emotion} a new Emotion instance from input
      * @exception {EmotionParseException} happens if line can't be parsed
      * */
-    public Emotion deserialize(String input) throws EmotionParseException {
+    private Emotion deserialize(String input) throws EmotionParseException {
         String[] args = input.split(Pattern.quote("|"));
         // unable to parse correctly
         if(args.length != 3) throw new EmotionParseException();
@@ -46,7 +46,7 @@ public class EmotionsController {
      * @param {} takes from instance list
      * @return {String} returns a string on all emotions from our emotionLog attribute
      * */
-    public String serialize() {
+    private String serialize() {
         StringBuilder results = new StringBuilder();
         for(Emotion em: this.model.getEmotions().getList()) {
             results.append(String.format("%s|%s|%s\n",
@@ -97,7 +97,7 @@ public class EmotionsController {
         }
     }
 
-    public void createDatabaseFile(Context context) {
+    private void createDatabaseFile(Context context) {
         try {
             FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
             fos.flush();
