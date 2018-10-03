@@ -24,9 +24,9 @@ public class ListActivity extends AppCompatActivity implements TView<EmotionsMod
     protected void onStart() {
         super.onStart();
         /*
-        * we inject activity to model and setup adapters in onStart because
-        * onCreate only runs once when the app initially loads this activity
-        */
+         * we inject activity to model and setup adapters in onStart because
+         * onCreate only runs once when the app initially loads this activity
+         */
 
         FeelsBookApplication.getEmotionsModel().addView(this);
 
@@ -43,13 +43,6 @@ public class ListActivity extends AppCompatActivity implements TView<EmotionsMod
         emotionAdapter = new EmotionsAdapter(this, 0, emotionsController.getEmotions());
         ListView list = findViewById(R.id.EmotionList);
         list.setAdapter(emotionAdapter);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // save emotion whenever this activity is not active
-        FeelsBookApplication.getEmotionsController().saveEmotions(this);
     }
 
     @Override

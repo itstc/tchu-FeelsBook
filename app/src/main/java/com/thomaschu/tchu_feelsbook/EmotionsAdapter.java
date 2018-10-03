@@ -44,7 +44,7 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
 
         // our buttons to edit/delete emotions
         final Button editButton = (Button) convertView.findViewById(R.id.emotionEditButton);
-        Button deleteButton = (Button) convertView.findViewById(R.id.emotionDeleteButton);
+        final Button deleteButton = (Button) convertView.findViewById(R.id.emotionDeleteButton);
 
         // populate fields
         emoteImage.setImageDrawable(getEmotionDrawable(emote.getEmotionType()));
@@ -56,8 +56,9 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.setEnabled(false);
                 Emotion editEmotion = (Emotion) getItem(position);
-                createEditForm(editEmotion);
+                createEditForm(editEmotion, (Button)v);
             }
         });
 
@@ -65,7 +66,11 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // don't need to re-enable if it's being deleted
+                v.setEnabled(false);
                 FeelsBookApplication.getEmotionsController().removeEmotion(emote);
+                FeelsBookApplication.getEmotionsController().saveEmotions(getContext());
+                v.setEnabled(true);
             }
         });
 
@@ -78,7 +83,7 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
     * @param {Emotion e} target emotion
     * @return {} nothing
     * */
-    private void createEditForm(final Emotion e) {
+    private void createEditForm(final Emotion e, final Button formButton) {
         // create a dialog and set layout to edit_form_popup
         dialog = new PopUpDialog(getContext(), e);
 
@@ -97,7 +102,9 @@ public class EmotionsAdapter extends ArrayAdapter implements EmotionConstants {
                     FeelsBookApplication.getEmotionsController().editEmotion(e,
                             commentBox.getText().toString(),
                             DateConverter.getDateFromString(formattedDateTime));
+                    FeelsBookApplication.getEmotionsController().saveEmotions(getContext());
                     // close dialog
+                    formButton.setEnabled(true);
                     dialog.dismiss();
                 } else {
                     // invalid form data

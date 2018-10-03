@@ -37,8 +37,8 @@
             android:ems="5"
             android:hint="Enter Comment (Optional)"
             android:inputType="textMultiLine"
-            android:maxLength="500"
-            android:maxLines="3" />
+            android:maxLength="100"
+            android:maxLines="2" />
         <LinearLayout
             android:id="@+id/DateTimeField"
             android:layout_width="match_parent"
