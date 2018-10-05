@@ -39,9 +39,10 @@ public class EmotionList {
         return emotions.contains(e);
     }
 
-    /* add/remove setters
-        @param {Emotion e} emotion we target
-        @return {void} nothing
+    /*
+    *   add/remove setters
+    *   @param {Emotion e} emotion we target
+    *   @return {void} nothing
     */
     public void add(Emotion e) {
         emotions.add(e);

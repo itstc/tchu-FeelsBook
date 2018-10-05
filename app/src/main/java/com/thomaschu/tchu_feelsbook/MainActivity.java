@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements TView<EmotionsMod
      **/
     public void onClick(View view) {
         // for emotion clicks we redirect to a modal to add comment
-        view.setEnabled(false);
         switch(view.getId()) {
             case R.id.JoyButton:
             case R.id.LoveButton:
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements TView<EmotionsMod
             case R.id.SadButton:
             case R.id.AngryButton:
             case R.id.FearButton:
-                createFormPopUp(view.getContentDescription().toString(), (Button)view);
+                createFormPopUp(view.getContentDescription().toString());
                 break;
             case R.id.HistoryButton:
                 Intent intent = new Intent(MainActivity.this, ListActivity.class);
@@ -67,15 +66,13 @@ public class MainActivity extends AppCompatActivity implements TView<EmotionsMod
         }
     }
 
-    private void createFormPopUp(final String type, final Button formButton) {
+    private void createFormPopUp(final String type) {
         dialog = new PopUpDialog(this, type);
         dialog.findViewById(R.id.DateTimeField).setVisibility(View.GONE);
         // set our submit to add emotions
         dialog.setSubmitButton(saveButtonText, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // set debounce to avoid multiple clicks
-                v.setEnabled(false);
 
                 // add and save emotions then re-enable button
                 TextView comment = dialog.findViewById(R.id.CommentBox);
@@ -83,9 +80,6 @@ public class MainActivity extends AppCompatActivity implements TView<EmotionsMod
                 FeelsBookApplication.getEmotionsController().saveEmotions(getApplicationContext());
                 Toast.makeText(MainActivity.this, type + " added!", Toast.LENGTH_SHORT).show();
 
-                // re-enable after operations
-                v.setEnabled(true);
-                formButton.setEnabled(true);
                 dialog.dismiss();
 
             }
